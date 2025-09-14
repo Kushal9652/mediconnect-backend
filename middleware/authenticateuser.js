@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+// Force deployment rebuild - authentication middleware
 function authenticateUser(req, res, next) {
   const authHeader = req.headers['authorization'];
   if (!authHeader) {
