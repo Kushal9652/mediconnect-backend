@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { createAppointment, getUserAppointments, getAppointmentById, getDoctorAppointments } = require('../controller/appointment.controller');
-const authenticateUser = require('../middleware/authenticateUser');
+const authenticateUser = require('../middleware/authenticateuser');
 
-// Optional authentication middleware for createAppointment
 const optionalAuth = (req, res, next) => {
   const token = req.headers.authorization?.replace('Bearer ', '');
   if (token) {
@@ -15,7 +14,6 @@ const optionalAuth = (req, res, next) => {
 
 router.post('/', optionalAuth, createAppointment);
 router.get('/', authenticateUser, getUserAppointments);
-router.get('/doctor/:doctorId', getDoctorAppointments); // Get appointments for a specific doctor
-router.get('/:id', getAppointmentById); // Public route to get appointment details for video call
-
+router.get('/doctor/:doctorId', getDoctorAppointments);
+router.get('/:id', getAppointmentById); 
 module.exports = router;
