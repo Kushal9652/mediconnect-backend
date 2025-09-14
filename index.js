@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./utils/db');
+// Force deployment update - case sensitivity fix applied
 const userRoutes = require('./routes/user.route');
 const addressRoutes = require('./routes/address.route');
 const billsRoutes = require('./routes/bills.route');
