@@ -28,7 +28,9 @@ app.get('/', (req, res) => {
     message: 'MediConnect Backend API is running successfully!',
     status: 'healthy',
     timestamp: new Date().toISOString(),
-    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    mongodbUriSet: !!process.env.MONGODB_URI,
+    environment: process.env.NODE_ENV || 'development'
   });
 });
 
@@ -40,8 +42,15 @@ app.use('/api/doctors', doctorRoutes);
 app.use('/api/payments', paymentRoutes);
 
 connectDB(process.env.MONGODB_URI)
-  .then(() => console.log('mongodb connected'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+  .then(() => {
+    console.log('MongoDB connected successfully');
+    console.log('Database state:', mongoose.connection.readyState);
+  })
+  .catch((err) => {
+    console.error('MongoDB connection error:', err.message);
+    console.error('MongoDB URI provided:', !!process.env.MONGODB_URI);
+    console.error('Full error:', err);
+  });
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
