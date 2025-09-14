@@ -34,6 +34,18 @@ app.get('/', (req, res) => {
   });
 });
 
+// Debug endpoint to check MongoDB connection details
+app.get('/debug/db', (req, res) => {
+  res.json({
+    readyState: mongoose.connection.readyState,
+    readyStateText: ['disconnected', 'connected', 'connecting', 'disconnecting'][mongoose.connection.readyState],
+    host: mongoose.connection.host || 'not connected',
+    name: mongoose.connection.name || 'not connected',
+    mongodbUriSet: !!process.env.MONGODB_URI,
+    mongodbUriLength: process.env.MONGODB_URI ? process.env.MONGODB_URI.length : 0
+  });
+});
+
 app.use('/api/auth', userRoutes);
 app.use('/api/address', addressRoutes);
 app.use('/api/bills', billsRoutes);
