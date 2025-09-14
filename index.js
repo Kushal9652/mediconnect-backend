@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const mongoose = require('mongoose');
 const connectDB = require('./utils/db');
 // Force deployment update - case sensitivity fix applied
 const userRoutes = require('./routes/user.route');
@@ -20,6 +21,16 @@ app.use(express.json());
 
 
 const port = process.env.PORT || 3000;
+
+// Root route for health check
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'MediConnect Backend API is running successfully!',
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+  });
+});
 
 app.use('/api/auth', userRoutes);
 app.use('/api/address', addressRoutes);
